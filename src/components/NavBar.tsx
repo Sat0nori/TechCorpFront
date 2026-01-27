@@ -1,7 +1,9 @@
 import { Bell, Settings, Sun, Zap } from "lucide-react"
+import { useState } from "react"
 import { Link, Outlet } from "react-router"
 
 const NavBar = () => {
+	const [open, setOpen] = useState(false)
 	return (
 		<div>
 			<header className="w-full border-b border-gray-800 bg-black">
@@ -28,28 +30,47 @@ const NavBar = () => {
 						{/* Search */}
 						<input
 							type="text"
-							placeholder="Recherche"
-							className="hidden md:block rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-600"
+							placeholder="Search tools...."
+							className="hidden md:block rounded-lg border border-gray-700 bg-neutral-900 px-3 py-1.5 text-sm text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-600"
 						/>
 
 						{/* Icons */}
 						<button className="rounded-lg p-2 hover:bg-gray-800">
 							<Sun className="h-5 w-5 text-yellow-300" />
 						</button>
-						<button className="rounded-lg p-2 hover:bg-gray-800">
+						<button className="relative rounded-lg p-2 hover:bg-gray-800">
 							<Bell className="h-5 w-5 text-gray-300" />
+							<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+								3
+							</span>
 						</button>
 						<button className="rounded-lg p-2 hover:bg-gray-800">
 							<Settings className="h-5 w-5 text-gray-300" />
 						</button>
 
 						{/* Avatar */}
-						<div className="h-8 w-8 rounded-full object-cover ring-2 ring-gray-700 bg-white" />
+						<div className="relative">
+							<button onClick={() => setOpen(!open)} className="h-8 w-8 rounded-full ring-2 ring-gray-700 bg-white" />
+
+							{/* Dropdown */}
+							{open && (
+								<div className="absolute right-0 mt-2 w-48 rounded-xl border border-gray-800 bg-neutral-900 shadow-lg">
+									<ul className="py-1 text-sm text-gray-200">
+										<li className="px-4 py-2 hover:bg-gray-800 cursor-pointer">Profile</li>
+										<li className="px-4 py-2 hover:bg-gray-800 cursor-pointer">Settings</li>
+										<li className="border-t border-gray-800 my-1" />
+										<li className="px-4 py-2 hover:bg-red-500/10 text-red-400 cursor-pointer">Logout</li>
+									</ul>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</header>
 
-			<Outlet />
+			<div className="bg-neutral-950 pt-3">
+				<Outlet />
+			</div>
 		</div>
 	)
 }

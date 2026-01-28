@@ -12,7 +12,7 @@ const NavBar = () => {
 					<div className="flex items-center gap-4">
 						{/* Logo */}
 						<div className="flex items-center gap-2">
-							<div className="flex items-center justify-center h-8 w-8 rounded text-white bg-gradient-to-br from-blue-500 to-violet-600">
+							<div className="flex items-center justify-center h-8 w-8 rounded text-white bg-linear-to-br from-blue-500 to-violet-600">
 								<Zap />
 							</div>
 							<span className="text-lg font-semibold text-white">TechCorp</span>
@@ -43,7 +43,7 @@ const NavBar = () => {
 							<Bell className="h-5 w-5 text-gray-300" />
 							<span
 								onClick={() => setNotifs(notifs + 1)}
-								className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white"
+								className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white"
 							>
 								{notifs}
 							</span>

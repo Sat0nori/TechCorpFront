@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from "axios"
-import type { AnalyticsInterface } from "../interfaces/AnalyticsInterface"
-import type { ToolInterface } from "../interfaces/ToolInterface"
-import type { DepartmentInterface } from "../interfaces/DepartmentInterface"
+import type { AnalyticsInterface } from "../utils/AnalyticsInterface"
+import type { ToolInterface } from "../utils/ToolInterface"
+import type { DepartmentInterface } from "../utils/DepartmentInterface"
 
 const api: AxiosInstance = axios.create({ baseURL: import.meta.env.VITE_URL })
 
@@ -39,6 +39,15 @@ export const dashboardService = {
 			return data
 		} catch (error) {
 			throw new Error("Erreur lors de la récupération des departments")
+		}
+	},
+
+	getTools: async (): Promise<ToolInterface[]> => {
+		try {
+			const { data } = await api.get("/tools")
+			return data
+		} catch (error) {
+			throw new Error("Erreur lors de la récupération des Tools")
 		}
 	},
 }

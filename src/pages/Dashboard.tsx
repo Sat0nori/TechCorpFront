@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { dashboardService } from "../services/dashboardService"
+import { dashboardService } from "../hooks/toolService"
 import { TrendingUp, Building, User, Wrench, Calendar, MoreVertical } from "lucide-react"
 import { useState } from "react"
 
@@ -44,13 +44,8 @@ const Dashboard = () => {
 	const isError = analyticsError || toolsError || recentToolsError || departmentsError
 	const [openMenuId, setOpenMenuId] = useState<number | null>(null)
 
-	if (isLoading) {
-		return <div className="min-h-screen bg-black text-white p-6">Loading...</div>
-	}
-
-	if (isError) {
-		return <div className="min-h-screen bg-black text-red-400 p-6">Error loading dashboard</div>
-	}
+	if (isLoading) return <div className="min-h-screen bg-black text-white p-6">Loading...</div>
+	if (isError) return <div className="min-h-screen bg-black text-red-400 p-6">Error loading dashboard</div>
 
 	return (
 		<div onClick={() => setOpenMenuId(null)} className="px-6 pb-6 min-h-screen bg-neutral-950">
@@ -64,7 +59,7 @@ const Dashboard = () => {
 				<div className="border border-gray-700/50 bg-black rounded-xl p-6 flex flex-col justify-between shadow relative">
 					<div className="flex justify-between items-center mb-2">
 						<h2 className="text-white text-lg font-medium">Monthly budget</h2>
-						<TrendingUp className="h-8 w-8 text-white rounded bg-gradient-to-br from-green-300 to-green-500 p-1" />
+						<TrendingUp className="h-8 w-8 text-white rounded bg-linear-to-br from-green-300 to-green-500 p-1" />
 					</div>
 					<p className="text-white text-3xl font-bold">
 						€{analytics && analytics.budget_overview.current_month_total}/€
@@ -73,7 +68,7 @@ const Dashboard = () => {
 								? `${(analytics.budget_overview.monthly_limit / 1000).toFixed(0)}k`
 								: analytics.budget_overview.monthly_limit)}
 					</p>
-					<p className="inline-block mt-2 px-2 py-1 rounded-full text-sm text-white font-semibold bg-gradient-to-br from-green-300 to-green-500 text-black w-max">
+					<p className="inline-block mt-2 px-2 py-1 rounded-full text-sm text-white font-semibold bg-linear-to-br from-green-300 to-green-500 w-max">
 						{analytics && analytics.kpi_trends.budget_change}
 					</p>
 				</div>
@@ -82,10 +77,10 @@ const Dashboard = () => {
 				<div className="border border-gray-700/50 bg-black rounded-xl p-6 flex flex-col justify-between shadow relative">
 					<div className="flex justify-between items-center mb-2">
 						<h2 className="text-white text-lg font-medium">Active tools</h2>
-						<Wrench className="h-8 w-8 text-white rounded bg-gradient-to-br from-blue-400 to-violet-500 p-1" />
+						<Wrench className="h-8 w-8 text-white rounded bg-linear-to-br from-blue-400 to-violet-500 p-1" />
 					</div>
 					<p className="text-white text-3xl font-bold">{activeTools && activeTools.length}</p>
-					<p className="inline-block mt-2 px-2 py-1 rounded-full text-sm text-white font-semibold bg-gradient-to-br from-blue-400 to-violet-500 text-black w-max">
+					<p className="inline-block mt-2 px-2 py-1 rounded-full text-sm text-white font-semibold bg-linear-to-br from-blue-400 to-violet-500 w-max">
 						{analytics && analytics.kpi_trends.tools_change}
 					</p>
 				</div>
@@ -94,10 +89,10 @@ const Dashboard = () => {
 				<div className="border border-gray-700/50 bg-black rounded-xl p-6 flex flex-col justify-between shadow relative">
 					<div className="flex justify-between items-center mb-2">
 						<h2 className="text-white text-lg font-medium">Departments</h2>
-						<Building className="h-8 w-8 text-white rounded bg-gradient-to-br from-orange-400 to-pink-500 p-1" />
+						<Building className="h-8 w-8 text-white rounded bg-linear-to-br from-orange-400 to-pink-500 p-1" />
 					</div>
 					<p className="text-white text-3xl font-bold">{departments && departments.length}</p>
-					<p className="inline-block mt-2 px-2 py-1 rounded-full text-sm text-white font-semibold bg-gradient-to-br from-orange-400 to-pink-500 text-black w-max">
+					<p className="inline-block mt-2 px-2 py-1 rounded-full text-sm text-white font-semibold bg-linear-to-br from-orange-400 to-pink-500 w-max">
 						{analytics && analytics.kpi_trends.departments_change}
 					</p>
 				</div>
@@ -106,10 +101,10 @@ const Dashboard = () => {
 				<div className="border border-gray-700/50 bg-black rounded-xl p-6 flex flex-col justify-between shadow relative">
 					<div className="flex justify-between items-center mb-2">
 						<h2 className="text-white text-lg font-medium">Cost/User</h2>
-						<User className="h-8 w-8 text-white rounded bg-gradient-to-br from-pink-400 to-red-500 p-1" />
+						<User className="h-8 w-8 text-white rounded bg-linear-to-br from-pink-400 to-red-500 p-1" />
 					</div>
 					<p className="text-white text-3xl font-bold">{analytics && analytics.cost_analytics.cost_per_user}</p>
-					<p className="inline-block mt-2 px-2 py-1 rounded-full text-white text-sm font-semibold bg-gradient-to-br from-pink-400 to-red-500 text-black w-max">
+					<p className="inline-block mt-2 px-2 py-1 rounded-full text-white text-sm font-semibold bg-linear-to-br from-pink-400 to-red-500 w-max">
 						{analytics && analytics.kpi_trends.cost_per_user_change}
 					</p>
 				</div>
@@ -137,7 +132,14 @@ const Dashboard = () => {
 						recentTools.map((tool) => (
 							<div key={tool.id} className="grid grid-cols-6 items-center py-3 text-gray-200 hover:bg-gray-900/50 transition">
 								<div className="flex items-center gap-3">
-									<img src={tool.icon_url} alt={`${tool.name} icon`} className="h-7 w-7 rounded-md object-contain" />
+									<img
+										src={tool.icon_url}
+										alt={`${tool.name} icon`}
+										className="h-7 w-7 rounded-md object-contain"
+										onError={(e) => {
+											e.currentTarget.src = "/image.png"
+										}}
+									/>
 									<span className="font-medium text-white">{tool.name}</span>
 								</div>
 								<span>{tool.owner_department}</span>

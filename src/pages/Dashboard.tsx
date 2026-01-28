@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { dashboardService } from "../services/dashboardService"
-import { TrendingUp, Building, User, Wrench } from "lucide-react"
+import { TrendingUp, Building, User, Wrench, Calendar, MoreVertical } from "lucide-react"
+import { useState } from "react"
 
 const Dashboard = () => {
 	const {
@@ -41,6 +42,7 @@ const Dashboard = () => {
 
 	const isLoading = analyticsLoading || toolsLoading || recentToolsLoading || departmentsLoading
 	const isError = analyticsError || toolsError || recentToolsError || departmentsError
+	const [openMenuId, setOpenMenuId] = useState<number | null>(null)
 
 	if (isLoading) {
 		return <div className="min-h-screen bg-black text-white p-6">Loading...</div>
@@ -51,7 +53,7 @@ const Dashboard = () => {
 	}
 
 	return (
-		<div className="px-6 pb-6 min-h-screen bg-neutral-950">
+		<div onClick={() => setOpenMenuId(null)} className="px-6 pb-6 min-h-screen bg-neutral-950">
 			{/* Titre */}
 			<h1 className="text-4xl font-bold mb-6 text-white">Internal Tools Dashboard</h1>
 			<p className="text-white text-xl mb-5">Monitor and manage your organization's software tools and expenses</p>
@@ -115,8 +117,14 @@ const Dashboard = () => {
 
 			{/* Recent tools */}
 			<div className="border border-gray-700/50 bg-black rounded-xl p-6 shadow">
-				<h2 className="text-white text-lg font-medium mb-2">Recent tools</h2>
-				<div className="grid grid-cols-5 text-sm text-gray-400 pb-2 border-b border-gray-700">
+				<div className="flex items-center justify-between mb-4">
+					<h2 className="text-white text-lg font-medium">Recent tools</h2>
+					<button className="flex items-center gap-2 rounded-lg  bg-black px-3 py-1.5 text-sm text-gray-300 hover:bg-gray-800">
+						<Calendar className="h-4 w-4" />
+						Last 30 days
+					</button>
+				</div>
+				<div className="grid grid-cols-6 text-sm text-gray-400 pb-2 border-b border-gray-700">
 					<span>Tool</span>
 					<span>Department</span>
 					<span>Users</span>
@@ -127,21 +135,50 @@ const Dashboard = () => {
 				<div className="divide-y divide-gray-800">
 					{recentTools &&
 						recentTools.map((tool) => (
-							<div key={tool.id} className="grid grid-cols-5 items-center py-3 text-gray-200 hover:bg-gray-900/50 transition">
+							<div key={tool.id} className="grid grid-cols-6 items-center py-3 text-gray-200 hover:bg-gray-900/50 transition">
 								<div className="flex items-center gap-3">
 									<img src={tool.icon_url} alt={`${tool.name} icon`} className="h-7 w-7 rounded-md object-contain" />
 									<span className="font-medium text-white">{tool.name}</span>
 								</div>
 								<span>{tool.owner_department}</span>
-								<span>{tool.active_users_count}</span>
-								<span>€{tool.monthly_cost}</span>
+								<span>{tool.active_users_count ?? 0}</span>
+								<span>€{tool.monthly_cost ?? 0}</span>
 								<span
 									className={`w-max px-2 py-1 rounded-full text-xs font-semibold ${
-										tool.status === "active" ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400"
+										tool.status === "active"
+											? "bg-green-500 text-white"
+											: tool.status === "expiring"
+												? "bg-orange-500 text-white"
+												: "bg-red-500 text-white"
 									}`}
 								>
 									{tool.status}
 								</span>
+								<div className="relative justify-self-end">
+									<button
+										onClick={(e) => {
+											e.stopPropagation()
+											setOpenMenuId(openMenuId === tool.id ? null : tool.id)
+										}}
+										className="rounded-lg p-2 hover:bg-gray-800"
+									>
+										<MoreVertical className="h-4 w-4 text-gray-400" />
+									</button>
+
+									{/* Dropdown (visuel) */}
+									{openMenuId === tool.id && (
+										<div
+											onClick={(e) => e.stopPropagation()}
+											className="absolute right-0 mt-2 w-32 rounded-lg border border-gray-700 bg-neutral-900 shadow-lg z-10"
+										>
+											<ul className="py-1 text-sm text-gray-200">
+												<li className="px-3 py-2 hover:bg-gray-800 cursor-pointer">View</li>
+												<li className="px-3 py-2 hover:bg-gray-800 cursor-pointer">Edit</li>
+												<li className="px-3 py-2 hover:bg-red-500/10 text-red-400 cursor-pointer">Delete</li>
+											</ul>
+										</div>
+									)}
+								</div>
 							</div>
 						))}
 				</div>

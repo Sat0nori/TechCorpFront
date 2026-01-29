@@ -133,7 +133,7 @@ const Dashboard = () => {
 							<div key={tool.id} className="grid grid-cols-6 items-center py-3 text-gray-200 hover:bg-gray-900/50 transition">
 								<div className="flex items-center gap-3">
 									<img
-										src={tool.icon_url}
+										src={tool.icon_url === "" ? "/image.png" : tool.icon_url}
 										alt={`${tool.name} icon`}
 										className="h-7 w-7 rounded-md object-contain"
 										onError={(e) => {

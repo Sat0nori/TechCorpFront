@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+🚀 Quick Start
+Installation et lancement en une commande
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- npm i
+- npm run dev
 
-Currently, two official plugins are available:
+🏗️ Architecture
+Structure projet et organisation du code sur 3 pages
+src :
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- component
+- pages
+- utils
 
-## React Compiler
+1er jour : dashboard + navbar
+2eme jour : Tools + filtre
+3eme jour : analytics
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🎨 Design System Evolution
+Comment le design s'est construit et maintenu sur 3 jours
 
-## Expanding the ESLint configuration
+- design de base donné par l'exemple et donc gardé sur les autres pages avec le fond presque noir ainsi que les degradés de couleurs
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+🔗 Navigation & User Journey
+Flow utilisateur complet : Dashboard → Tools → Analytics
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- dashboard utilisation des boutons view, edit, delete
+- navbar disponible pour navigation vers les autres pages
+- tools filtres disponibles
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+📊 Data Integration Strategy
+Gestion des données du JSON server à travers les pages
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- sur dashboard récupération des analytics, activeTools, recentTools et departments
+- sur tools récupération des tools complets ainsi que les departments
+- sur analytics récupération des analytics et des tools
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+📱 Progressive Responsive Design
+Approche mobile-first et adaptation par page
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- gestion du responsive sur dashboard avec grid pour les KPI
+- gestion sur la navbar avec barre de recherche qui s'enleve et réduction des titres des pages en lettres
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+🧪 Testing Strategy
+Tests unitaires et stratégie QA sur l'ensemble
+
+- Pas fait, manque de temps
+
+⚡ Performance Optimizations
+Techniques utilisées pour une app 3-pages optimale
+
+- utilisation de tanstack query pour l'appel au back
+
+🎯 Design Consistency Approach
+Comment vous avez maintenu la cohérence sans mockups J7-J8
+
+- en gardant les couleurs du fond, le style d'écriture, l'utilisation de bordure ainsi que les couleurs utilisées
+
+📈 Data Visualization Philosophy
+Choix de charts library et intégration design system
+
+🔮 Next Steps / Complete App Vision
+Évolutions possibles pour une app SaaS Tools complète

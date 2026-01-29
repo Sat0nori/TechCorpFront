@@ -20,10 +20,31 @@ const NavBar = () => {
 
 						{/* Navigation */}
 						<nav className="ml-6 flex items-center gap-4 text-white">
-							<Link to="/">Dashboard</Link>
-							<Link to="/tools">Tools</Link>
-							<Link to="/analytics">Analytics</Link>
-							<Link to="/settings">Settings</Link>
+							<Link to="/" className="hidden sm:inline">
+								{" "}
+								Dashboard{" "}
+							</Link>
+							<Link to="/" className="sm:hidden font-bold">
+								D
+							</Link>
+							<Link to="/tools" className="hidden sm:inline">
+								Tools
+							</Link>
+							<Link to="/tools" className="sm:hidden font-bold">
+								T
+							</Link>
+							<Link to="/analytics" className="hidden sm:inline">
+								Analytics
+							</Link>
+							<Link to="/analytics" className="sm:hidden font-bold">
+								A
+							</Link>
+							<Link to="/settings" className="hidden sm:inline">
+								Settings
+							</Link>
+							<Link to="/settings" className="sm:hidden font-bold">
+								S
+							</Link>
 						</nav>
 					</div>
 

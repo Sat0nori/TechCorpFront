@@ -47,7 +47,7 @@ const Tools = () => {
 	const categories = Array.from(new Set(tools.map((t) => t.category)))
 
 	return (
-		<div className="min-h-screen bg-black">
+		<div className="min-h-screen bg-neutral-950 pl-3 pr-3">
 			{/* Title and Filter*/}
 			<div className="flex px-6 items-center justify-between mb-4">
 				<h2 className="text-white text-4xl font-medium">Tools</h2>
